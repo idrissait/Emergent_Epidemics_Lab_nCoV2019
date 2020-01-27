@@ -1,10 +1,10 @@
-#SV Scarpino
+#SV Scarpino - I Ait-Bouziad
 #nCov2019
-#Jan 24th 2020
+#Jan 27th 2020
 
 #libraries
 library(googlesheets4)
-library(googledrive)
+
 
 #globals
 cols_to_use <- c("ID", "age", "sex", "city", "province", "country", "date_onset_symptoms", "date_admission_hospital", "date_confirmation", "symptoms", "lives_in_Wuhan", "travel_history_dates", "travel_history_location", "reported_market_exposure", "sequence_available", "outcome", "source")
@@ -15,14 +15,18 @@ google_sheet_name <- readLines("secrets/google_sheet_name.txt")
 
 options(mapbox.accessToken = mapbox_accessToken)
 
-#acc functions
+#Idriss Junk code
 
 
 #data
-sheets_auth(path = "secrets/service_google_api_key.json", use_oob = TRUE)
+sheets_auth(path = "secrets/service_google_api_key.json")
 
-wuhan_data <- sheets_get(ss = google_sheet_name) %>%
-  read_sheet(sheet = "Hubei")
+wuhan_data <- read_sheet(
+  ss = google_sheet_name,
+  sheet = 'Hubei',
+)
+
+
 
 #changing wuhan resident column
 find_Wuhan_resident <- which(colnames(wuhan_data) == "Wuhan_resident")
@@ -32,8 +36,11 @@ if(length(find_Wuhan_resident) == 1){
 
 wuhan_data$ID <- paste0(wuhan_data$ID, "-Wuhan")
 
-outside_wuhan_data <- sheets_get(ss = google_sheet_name) %>%
-  read_sheet(sheet = "outside_Hubei")
+outside_wuhan_data <- read_sheet(
+  ss = google_sheet_name,
+  sheet = 'outside_Hubei',
+)
+
 
 outside_wuhan_data$ID <- paste0(outside_wuhan_data$ID, "-Outside-Wuhan")
 
@@ -45,3 +52,6 @@ full_data$longitude <- jitter(full_data$longitude)
 full_data$date_admission_hospital <- as.POSIXct(strptime(full_data$date_admission_hospital, format = "%d.%m.%Y"))
 full_data$date_confirmation <- as.POSIXct(strptime(full_data$date_confirmation, format = "%d.%m.%Y"))
 full_data$date_onset_symptoms <- as.POSIXct(strptime(full_data$date_onset_symptoms, format = "%d.%m.%Y"))
+
+
+

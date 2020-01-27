@@ -1,10 +1,14 @@
-#SV Scarpino
+#SV Scarpino - I Ait-Bouziad
 #nCov2019
-#Jan 24th 2020
+#Jan 27th 2020
 
 ###########
 #Libraries#
 ###########
+
+#Only one not on CRAN
+#devtools::install_github("rstudio/leaflet.mapboxgl")
+
 library(leaflet)
 library(RColorBrewer)
 library(scales)
