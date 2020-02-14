@@ -4,6 +4,7 @@
 
 #libraries
 library(googlesheets4)
+library(dplyr)
 
 
 #globals
@@ -15,7 +16,6 @@ google_sheet_name <- readLines("secrets/google_sheet_name.txt")
 
 options(mapbox.accessToken = mapbox_accessToken)
 
-#Idriss Junk code
 
 
 #data
@@ -44,10 +44,12 @@ outside_wuhan_data <- read_sheet(
 
 outside_wuhan_data$ID <- paste0(outside_wuhan_data$ID, "-Outside-Wuhan")
 
+outside_wuhan_data$data_moderator_initials <- NULL 
+
 full_data <- rbind(wuhan_data, outside_wuhan_data)
 
-full_data$latitude <- jitter(full_data$latitude)
-full_data$longitude <- jitter(full_data$longitude)
+full_data$latitude <- jitter(full_data$latitude, factor = 30)
+full_data$longitude <- jitter(full_data$longitude, factor = 30)
 
 full_data$date_admission_hospital <- as.POSIXct(strptime(full_data$date_admission_hospital, format = "%d.%m.%Y"))
 full_data$date_confirmation <- as.POSIXct(strptime(full_data$date_confirmation, format = "%d.%m.%Y"))
